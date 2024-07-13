@@ -3,8 +3,6 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/gorilla/mux"
 )
 
 func homePage(w http.ResponseWriter, r *http.Request) {
@@ -13,20 +11,13 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 }
 
 func setupRoutes() {
-	http.HandleFunc("/", homePage)
+	http.HandleFunc("/home", homePage)
 }
 
 func Init() {
-
-	router := mux.NewRouter()
 	setupRoutes()
-
-	port := ":8081"
-	err := http.ListenAndServe(port, router)
-	if err != nil {
-		fmt.Println("Server is not running", err)
-	} else {
-		fmt.Printf("Server is running at port %s", port)
+	fmt.Print("Server is running at port 8080")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		fmt.Println("getting error ", err)
 	}
-
 }
