@@ -17,6 +17,7 @@ func setupRoutes() {
 	myRouter.HandleFunc("/", controllers.Welcome)
 	myRouter.HandleFunc("/home", controllers.UrlData).Methods("POST")
 	myRouter.HandleFunc("/home/videoinfo", controllers.VideoInfo).Methods("GET")
+	myRouter.HandleFunc("/home/download", controllers.DownloaderHandler).Methods("GET")
 	if err := http.ListenAndServe(port, myRouter); err != nil {
 		fmt.Println("An Error Occured - ", err)
 	}

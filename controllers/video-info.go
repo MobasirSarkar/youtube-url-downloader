@@ -8,20 +8,11 @@ import (
 	"net/http"
 	"os"
 
+	model "github.com/MobasirSarkar/youtube-url-downloader.git/models"
 	utils "github.com/MobasirSarkar/youtube-url-downloader.git/utils"
+
 	"github.com/joho/godotenv"
 )
-
-type VideoResponse struct {
-	Items []struct {
-		Id      string `json:"id"`
-		Snippet struct {
-			Title        string `json:"title"`
-			Description  string `json:"description"`
-			ChannelTitle string `json:"channelTitle"`
-		} `json:"snippet"`
-	} `json:"items"`
-}
 
 func VideoInfo(w http.ResponseWriter, r *http.Request) {
 	err := godotenv.Load()
@@ -50,7 +41,7 @@ func VideoInfo(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Error reading response body %v", err)
 	}
 
-	var videoResponse VideoResponse
+	var videoResponse model.YouTubeResponse
 
 	err = json.Unmarshal(body, &videoResponse)
 	if err != nil {
@@ -58,9 +49,9 @@ func VideoInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(videoResponse.Items) > 0 {
-
 		video := videoResponse.Items[0]
-		fmt.Fprint(w, video.Snippet.ChannelTitle)
+		fmt.Fprint(w, video)
+	} else {
+		fmt.Fprint(w, "No Video Data")
 	}
-	fmt.Fprint(w, "no video data")
 }
